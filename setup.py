@@ -42,6 +42,9 @@ setup(
         ],
     test_suite='tests.suite',
     entry_points={
-        'console_scripts': ['tmplr=tmplr_cli.app:main'],
+        'console_scripts': [
+            'tmplr=tmplr_cli.tmplr_app:main',
+            'temples=tmplr_cli.temples_app:main',
+            ],
     },
 )
