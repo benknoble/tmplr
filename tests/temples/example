@@ -1,0 +1,11 @@
+###
+# output : /tmp/tmplr-test-example-{fname}
+# help : tmux config script
+# delim : %%
+###
+#! /bin/sh
+content...
+%%var
+%%{func_name}
+%%var
+...etc.
