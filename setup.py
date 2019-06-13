@@ -22,7 +22,8 @@ setup(
     url='https://github.com/benknoble/tmplr',
     author='D. Ben Knoble',
     author_email='ben.knoble@gmail.com',
-    description='File-generating tool',
+    license='MIT',
+    description='The holiest cli template system',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',
     classifiers=[
