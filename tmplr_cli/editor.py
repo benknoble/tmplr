@@ -10,7 +10,7 @@ def edit(filename):
     Edit a file. cf. editor in this module
     '''
     cmd = [editor(), filename]
-    return subprocess.run(cmd)
+    return subprocess.run(cmd).returncode
 
 
 def editor():
