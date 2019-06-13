@@ -1,4 +1,4 @@
-'''tmplr's frontend orchestration'''
+'''temples' frontend orchestration'''
 
 import argparse
 
