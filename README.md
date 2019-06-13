@@ -1,5 +1,7 @@
 # tmplr
 
+[![This project is considered stable](https://img.shields.io/badge/status-stable-success.svg)](https://benknoble.github.io/status/stable/)
+
 Generate project files from templates on the command-line
 
 ## Installation
