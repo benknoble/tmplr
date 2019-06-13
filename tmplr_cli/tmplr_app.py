@@ -65,7 +65,7 @@ def main():
     if args.temple not in temples:
         p.error('''No temple "{temple}".
 
-Create it with "temples -e {temple}".'''.format(temple=args.temple))
+Create it with "temples -e -t {temple}".'''.format(temple=args.temple))
     temple = tmplr.temple.from_file(path.join(args.dir, args.temple))
     subs = dict(
             map(
