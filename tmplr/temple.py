@@ -142,13 +142,17 @@ def temples(tpath):
 
     See also from_file.
     '''
-    if path.isdir(tpath):
+    if not path.exists(tpath):
+        return dict()
+    elif path.isdir(tpath):
         files = glob.iglob(
                 path.join(
                     path.expanduser(tpath),
                     '*'))
-    else:
+    elif path.isfile(tpath):
         files = [tpath]
+    else:
+        return dict()
     return {t.name: t
             for t in map(
                 from_file,
