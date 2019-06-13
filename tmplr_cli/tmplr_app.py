@@ -2,6 +2,7 @@
 
 import argparse
 import os.path as path
+import sys
 
 import tmplr
 import tmplr.temple
@@ -49,6 +50,12 @@ def parser():
     return p
 
 
+def parse_kv(kv):
+    key, *vals = kv.split('=')
+    val = '='.join(vals)
+    return (key, val)
+
+
 def main():
     p = parser()
     args = p.parse_args()
@@ -56,15 +63,26 @@ def main():
         args.no_edit = True
     temples = tmplr.temple.temples(args.dir)
     if args.temple not in temples:
-        p.error('''No temple '{temple}'.
+        p.error('''No temple "{temple}".
 
-Create it with temples -e {temple}'''.format(
-                    temple=args.temple))
+Create it with "temples -e {temple}".'''.format(temple=args.temple))
     temple = tmplr.temple.from_file(path.join(args.dir, args.temple))
-    # parse render_args
-    # write should return path written, or None
-    # write needs a stdout=False option
-    print(args)
+    subs = dict(
+            map(
+                lambda kv: parse_kv(kv),
+                args.render_args))
+    if not all(
+            key in subs
+            for key in temple.placeholders()):
+        p.error('''Missing placeholder value.
+
+Run "temples {temple}" to see available keys.'''.format(temple=args.temple))
+    temple.render(subs)
+    written = temple.write(filename=args.file, stdout=args.stdout)
+    if written and not args.no_edit:
+        sys.exit(editor.edit(written))
+    else:
+        sys.exit(0)
 
 
 if __name__ == '__main__':
