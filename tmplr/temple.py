@@ -79,28 +79,39 @@ class Temple(object):
         self.rendered = self.template.safe_substitute(subs, **kwargs)
         return self.rendered
 
-    def write(self, filename=None):
-        '''write(filename=None) -> None
+    def write(self, filename=None, stdout=False):
+        '''write(filename=None) -> path
 
         Write via output.
-            1. If output is stdout, print
-            2. Else, write to file(output).
+            1. If any of
+                - stdout is True
+                - output is stdout
+                - filename is None but {fname} is in output
+                then print and return None
+            2. Else, write to file(output) & return path written
                 - {fname} will be substituted for filename
+                - if path already exists, don't write, but return path
         '''
-        if self.output is 'stdout' or (
-                filename is None and '{fname}' in self.output):
-            print(self.rendered)
+        stdout_conditions = (
+                stdout,
+                self.output is 'stdout',
+                filename is None and '{fname}' in self.output,
+                )
+        if any(stdout_conditions):
+            print(self.rendered, end='')
+            return None
         else:
             fullpath = path.expanduser(
                     self.output.format(fname=filename))
             dirname = path.dirname(fullpath)
             if path.exists(fullpath):
-                # silent?
-                return
+                # silent
+                return fullpath
             if not path.isdir(dirname):
                 os.makedirs(dirname)
             with open(fullpath, mode='w', errors='strict') as f:
                 f.write(self.rendered)
+            return fullpath
 
 
 def from_file(filename):
