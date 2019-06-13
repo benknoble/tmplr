@@ -87,7 +87,8 @@ class Temple(object):
             2. Else, write to file(output).
                 - {fname} will be substituted for filename
         '''
-        if self.output is 'stdout':
+        if self.output is 'stdout' or (
+                filename is None and '{fname}' in self.output):
             print(self.rendered)
         else:
             fullpath = path.expanduser(
