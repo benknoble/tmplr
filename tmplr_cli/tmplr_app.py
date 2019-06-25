@@ -81,7 +81,7 @@ Create it with "temples -e -t {temple}".'''.format(temple=args.temple))
             for key in temple.placeholders()):
         p.error('''Missing placeholder value.
 
-Run "temples {temple}" to see available keys.'''.format(temple=args.temple))
+Run "temples -t {temple}" to see available keys.'''.format(temple=args.temple))
     temple.render(subs)
     written = temple.write(filename=args.file, stdout=args.stdout)
     if written and not args.no_edit:
