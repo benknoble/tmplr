@@ -92,6 +92,8 @@ patch_cli minor_cli major_cli: NEW_VERSION=$(shell echo $(CLI_VERSION) | $(bump_
 patch minor major patch_cli minor_cli major_cli:
 	sed -e "/version/s/.*/__version__ = '$(NEW_VERSION)'/" $(FILE) > $(FILE).new
 	mv $(FILE).new $(FILE)
+	git add $(FILE)
+	git commit -m 'Bump version'
 
 # run setup.py's check
 check:
