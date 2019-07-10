@@ -27,6 +27,12 @@ def parser():
             help='Directory of temples: default ~/.tmplr',
             )
     p.add_argument(
+            '-D',
+            '--print-dir',
+            help='Only print the temples dir. Compatible with -d',
+            action='store_true',
+            )
+    p.add_argument(
             '-e',
             '--edit',
             action='store_true',
@@ -45,6 +51,9 @@ def parser():
 def main():
     p = parser()
     args = p.parse_args()
+    if args.print_dir:
+        print(args.dir)
+        sys.exit(0)
     if args.temple is None:
         temples = tmplr.temple.temples(args.dir)
         print('\n'.join(temples.keys()))
