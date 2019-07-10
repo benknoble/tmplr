@@ -67,7 +67,7 @@ deploy: test $(DIST_FILES)
 
 # clean up
 clean:
-	-rm $(DIST_FILES)
+	-rm -r $(DIST)
 	-find -f tmplr tmplr_cli -iname '*pyc' -delete -print
 	$(run_setup) clean -a
 
