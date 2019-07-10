@@ -18,8 +18,8 @@ pip = $(call v_py_module,pip)
 twine = $(call v_py_module,twine)
 
 bump_patch = $(AWK) -F. -v OFS='.' '{print $$1,$$2,$$3+1}'
-bump_minor = $(AWK) -F. -v OFS='.' '{print $$1,$$2+1,$$3}'
-bump_major = $(AWK) -F. -v OFS='.' '{print $$1+1,$$2,$$3}'
+bump_minor = $(AWK) -F. -v OFS='.' '{print $$1,$$2+1,0}'
+bump_major = $(AWK) -F. -v OFS='.' '{print $$1+1,0,0}'
 #  macros }}}
 
 #  variables {{{
