@@ -1,3 +1,7 @@
 '''The cli for tmplr'''
 
-__version__ = '0.0.1'
+import tmplr
+
+__version__ = tmplr.__version__
+
+del tmplr

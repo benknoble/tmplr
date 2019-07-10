@@ -85,11 +85,8 @@ maintainer-clean:
 patch minor major: FILE=tmplr/__init__.py
 patch minor major: NEW_VERSION=$(shell echo $(TMPLR_VERSION) | $(bump_$@))
 
-patch_cli minor_cli major_cli: FILE=tmplr_cli/__init__.py
-patch_cli minor_cli major_cli: NEW_VERSION=$(shell echo $(CLI_VERSION) | $(bump_$(@:_cli=)))
-
 # for the maintainers: version bump
-patch minor major patch_cli minor_cli major_cli:
+patch minor major:
 	sed -e "/version/s/.*/__version__ = '$(NEW_VERSION)'/" $(FILE) > $(FILE).new
 	mv $(FILE).new $(FILE)
 	git add $(FILE)
