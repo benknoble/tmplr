@@ -45,33 +45,43 @@ def parser():
             # type=tmplr.temple.from_file,
             # can't do this because we depend on -d dir
             )
+    p.add_argument(
+            '-T',
+            '--print-temple',
+            help='only print path to temple. Requires -t',
+            action='store_true',
+            )
     return p
 
 
 def main():
     p = parser()
     args = p.parse_args()
+    temples = tmplr.temple.temples(args.dir)
     if args.print_dir:
         print(args.dir)
         sys.exit(0)
-    if args.temple is None:
-        temples = tmplr.temple.temples(args.dir)
+    elif args.temple is None:
         print('\n'.join(temples.keys()))
         sys.exit(0)
-    elif args.edit:
-        if not path.exists(args.dir):
-            os.makedirs(args.dir)
-        temple = path.join(args.dir, args.temple)
-        sys.exit(editor.edit(temple))
+    # temple given
     else:
-        temples = tmplr.temple.temples(args.dir)
-        if args.temple not in temples:
-            p.error('''No temple "{temple}".
+        temple = path.join(args.dir, args.temple)
+        if args.print_temple:
+            print(temple)
+            sys.exit(0)
+        elif args.edit:
+            if not path.exists(args.dir):
+                os.makedirs(args.dir)
+            sys.exit(editor.edit(temple))
+        else:
+            if args.temple not in temples:
+                p.error('''No temple "{temple}".
 
 Create it with "temples -e -t {temple}".'''.format(temple=args.temple))
-        temple = tmplr.temple.from_file(path.join(args.dir, args.temple))
-        print(temple.helptext())
-        sys.exit(0)
+            temple = tmplr.temple.from_file(temple)
+            print(temple.helptext())
+            sys.exit(0)
 
 
 if __name__ == '__main__':
