@@ -84,10 +84,16 @@ Create it with "temples -e -t {temple}".'''.format(temple=args.temple))
 Run "temples -t {temple}" to see available keys.'''.format(temple=args.temple))
     temple.render(subs)
     written = temple.write(filename=args.file, stdout=args.stdout)
-    if written and not args.no_edit:
-        sys.exit(editor.edit(written))
+    if written:
+        if args.no_edit:
+            # log file for application usage
+            print(written)
+            exit = 0
+        else:
+            exit = editor.edit(written)
     else:
-        sys.exit(0)
+        exit = 0
+    sys.exit(exit)
 
 
 if __name__ == '__main__':
