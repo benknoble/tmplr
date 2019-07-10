@@ -42,6 +42,14 @@ def parser():
                     {fname}, implies --stdout''',
             )
     p.add_argument(
+            '-F',
+            '--print-file',
+            help='''Do not render temple. Print filename for rendered
+                    template (including -f values). Not compatible with any
+                    other render options.''',
+            action='store_true',
+            )
+    p.add_argument(
             'temple',
             help='Temple to render',
             # type=tmplr.temple.from_file,
@@ -72,6 +80,9 @@ def main():
 
 Create it with "temples -e -t {temple}".'''.format(temple=args.temple))
     temple = tmplr.temple.from_file(path.join(args.dir, args.temple))
+    if args.print_file:
+        print(temple.filename(args.file))
+        sys.exit(0)
     subs = dict(
             map(
                 lambda kv: parse_kv(kv),

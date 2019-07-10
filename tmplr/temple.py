@@ -71,6 +71,13 @@ class Temple(object):
                     lambda p: p.lstrip(self.delim + '{').rstrip('}'),
                     self.placeholder_re.findall(self.template.template)))
 
+    def filename(self, filename):
+        '''filename(filename) -> str
+
+        Filename where rendered template *would* be written
+        '''
+        return path.expanduser(self.output.format(fname=filename))
+
     def render(self, subs=None, **kwargs):
         '''render(subs=None, **kwargs) -> str
 
@@ -101,8 +108,7 @@ class Temple(object):
             print(self.rendered, end='')
             return None
         else:
-            fullpath = path.expanduser(
-                    self.output.format(fname=filename))
+            fullpath = self.filename(filename)
             dirname = path.dirname(fullpath)
             if path.exists(fullpath):
                 # silent

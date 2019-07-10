@@ -56,3 +56,8 @@ my_var
         self.assertTrue(all(
                 isinstance(temp, temple.Temple)
                 for temp in temples.values()))
+
+    def test_filename(self):
+        t = temple.from_file(self.example)
+        self.assertEqual(t.filename('templar'),
+                         '/tmp/tmplr-test-example-templar')
