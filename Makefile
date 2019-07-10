@@ -91,6 +91,7 @@ patch minor major:
 	mv $(FILE).new $(FILE)
 	git add $(FILE)
 	git commit -m 'Bump version'
+	git tag v$(NEW_VERSION)
 
 # run setup.py's check
 check:
