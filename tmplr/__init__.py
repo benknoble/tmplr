@@ -90,4 +90,4 @@ If fname is passed as, e.g., templar, the result will be written to
 /tmp/tmplr-test-example-templar.
 '''
 
-__version__ = '0.2.0'
+__version__ = '0.2.1'
