@@ -109,7 +109,8 @@ class Temple(object):
             return None
         else:
             fullpath = self.filename(filename)
-            dirname = path.dirname(fullpath)
+            # treat no directory as ./
+            dirname = path.dirname(fullpath) or path.curdir
             if path.exists(fullpath):
                 # silent
                 return fullpath
