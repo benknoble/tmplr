@@ -41,7 +41,7 @@ class Temple(object):
         write(filename=None) -- write via output
     '''
 
-    def __init__(self, name, output, helptext, content, delim='%%'):
+    def __init__(self, name, output, helptext, content, delim='%%', path=None):
         self.name = name
         self.output = output
         self.help = helptext
@@ -148,7 +148,8 @@ def from_file(filename):
             directives['output'],
             directives['help'],
             content,
-            delim=directives['delim'])
+            delim=directives['delim'],
+            path=filename)
 
 
 def temples(tpath):
