@@ -59,8 +59,13 @@ class Temple(object):
 
         Text suitable for display as help about the Temple
         '''
-        return '%s : %s\nPlaceholders\n\t%s' % (
+        if self.permissions:
+            perms = f' ({os.st.filemode(self.permissions)})'
+        else:
+            perms = ''
+        return '%s%s: %s\nPlaceholders\n\t%s' % (
                 self.name,
+                perms,
                 self.help,
                 '\n\t'.join(self.placeholders()))
 
