@@ -50,6 +50,9 @@ class Temple(object):
         self.placeholder_re = re.compile(re.escape(delim) + r'{?\w+}?')
         self.Template = make_Template(name, delimiter=delim)
         self.template = self.Template(content)
+        self.permissions = False
+        if path:
+            self.permissions = os.stat(path).st_mode
 
     def helptext(self):
         '''helptext() -> str
@@ -118,6 +121,9 @@ class Temple(object):
                 os.makedirs(dirname)
             with open(fullpath, mode='w', errors='strict') as f:
                 f.write(self.rendered)
+            # update permissions based on origin
+            if self.permissions:
+                os.chmod(fullpath, self.permissions)
             return fullpath
 
 
