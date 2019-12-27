@@ -40,7 +40,6 @@ DEV_REQS = $(V_TWINE)
 
 TMPLR_VERSION = $(shell $(run_setup) --version)
 TMPLR_FULLVERSION = $(shell $(run_setup) --fullname)
-CLI_VERSION = $(shell grep version tmplr_cli/__init__.py | cut -f 3 -d' ' | tr -d \')
 
 DIST = dist
 TAR = $(DIST)/$(TMPLR_FULLVERSION).tar.gz
