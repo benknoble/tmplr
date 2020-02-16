@@ -86,7 +86,7 @@ patch minor major: NEW_VERSION=$(shell echo $(TMPLR_VERSION) | $(bump_$@))
 
 # for the maintainers: version bump
 patch minor major:
-	sed -e "/version/s/.*/__version__ = '$(NEW_VERSION)'/" $(FILE) > $(FILE).new
+	sed -e "/version/s/.*/__version__ = \"$(NEW_VERSION)\"/" $(FILE) > $(FILE).new
 	mv $(FILE).new $(FILE)
 	git add $(FILE)
 	git commit -m 'Bump version'
