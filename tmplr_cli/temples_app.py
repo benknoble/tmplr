@@ -1,4 +1,4 @@
-'''temples' frontend orchestration'''
+"""temples' frontend orchestration"""
 
 import argparse
 import os
@@ -12,45 +12,38 @@ import tmplr_cli.editor as editor
 
 
 def parser():
-    p = argparse.ArgumentParser(
-            description='Queries temples',
-            )
+    p = argparse.ArgumentParser(description="Queries temples",)
     p.add_argument(
-            '--version',
-            action='version',
-            version=tmplr_cli.__version__,
-            )
+        "--version", action="version", version=tmplr_cli.__version__,
+    )
     p.add_argument(
-            '-d',
-            '--dir',
-            default=path.expanduser(path.join('~', '.tmplr')),
-            help='Directory of temples: default ~/.tmplr',
-            )
+        "-d",
+        "--dir",
+        default=path.expanduser(path.join("~", ".tmplr")),
+        help="Directory of temples: default ~/.tmplr",
+    )
     p.add_argument(
-            '-D',
-            '--print-dir',
-            help='Only print the temples dir. Compatible with -d',
-            action='store_true',
-            )
+        "-D",
+        "--print-dir",
+        help="Only print the temples dir. Compatible with -d",
+        action="store_true",
+    )
     p.add_argument(
-            '-e',
-            '--edit',
-            action='store_true',
-            help='Edit the temple',
-            )
+        "-e", "--edit", action="store_true", help="Edit the temple",
+    )
     p.add_argument(
-            '-t',
-            '--temple',
-            help='Temple to query',
-            # type=tmplr.temple.from_file,
-            # can't do this because we depend on -d dir
-            )
+        "-t",
+        "--temple",
+        help="Temple to query",
+        # type=tmplr.temple.from_file,
+        # can't do this because we depend on -d dir
+    )
     p.add_argument(
-            '-T',
-            '--print-temple',
-            help='only print path to temple. Requires -t',
-            action='store_true',
-            )
+        "-T",
+        "--print-temple",
+        help="only print path to temple. Requires -t",
+        action="store_true",
+    )
     return p
 
 
@@ -62,7 +55,7 @@ def main():
         print(args.dir)
         sys.exit(0)
     elif args.temple is None:
-        print('\n'.join(temples.keys()))
+        print("\n".join(temples.keys()))
         sys.exit(0)
     # temple given
     else:
@@ -76,13 +69,17 @@ def main():
             sys.exit(editor.edit(temple))
         else:
             if args.temple not in temples:
-                p.error('''No temple "{temple}".
+                p.error(
+                    """No temple "{temple}".
 
-Create it with "temples -e -t {temple}".'''.format(temple=args.temple))
+Create it with "temples -e -t {temple}".""".format(
+                        temple=args.temple
+                    )
+                )
             temple = tmplr.temple.from_file(temple)
             print(temple.helptext())
             sys.exit(0)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

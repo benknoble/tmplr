@@ -1,4 +1,4 @@
-'''The holiest cli template system
+"""The holiest cli template system
 
 tmplr provides modules for working with tmplr templates, called Temples. Most
 Temples are represented by actual files on disk, so a convenience function is
@@ -88,6 +88,6 @@ argument to render.
 
 If fname is passed as, e.g., templar, the result will be written to
 /tmp/tmplr-test-example-templar.
-'''
+"""
 
-__version__ = '0.3.0'
+__version__ = "0.3.0"

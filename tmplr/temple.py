@@ -1,4 +1,4 @@
-'''Classes and functions for dealing with tmplr templates
+"""Classes and functions for dealing with tmplr templates
 
 Classes:
     Temple -- a template
@@ -7,7 +7,7 @@ Functions:
     make_Template -- generates a subclass of string.Template on the fly
     from_file -- Temple from file
     temples -- maps names to Temples in a directory
-'''
+"""
 
 import string
 import re
@@ -17,19 +17,16 @@ import glob
 
 
 def make_Template(name, **kwargs):
-    '''make_Template(name, **kwargs) -> subclass of string.Template
+    """make_Template(name, **kwargs) -> subclass of string.Template
 
     - name is the name of the subclass
     - kwargs is passed as the dict element to type
-    '''
-    return type(
-            name,
-            (string.Template,),
-            kwargs)
+    """
+    return type(name, (string.Template,), kwargs)
 
 
 class Temple(object):
-    '''Template object for templr
+    """Template object for templr
 
     Temple(name, output, helptext, content, delim='%%') -> new Temple
 
@@ -39,15 +36,15 @@ class Temple(object):
         render(subs=None, **kwargs) -- render the template
                                   (see string.Template.safe_substitute)
         write(filename=None) -- write via output
-    '''
+    """
 
-    def __init__(self, name, output, helptext, content, delim='%%', path=None):
+    def __init__(self, name, output, helptext, content, delim="%%", path=None):
         self.name = name
         self.output = output
         self.help = helptext
         self.content = content
         self.delim = delim
-        self.placeholder_re = re.compile(re.escape(delim) + r'{?\w+}?')
+        self.placeholder_re = re.compile(re.escape(delim) + r"{?\w+}?")
         self.Template = make_Template(name, delimiter=delim)
         self.template = self.Template(content)
         self.permissions = False
@@ -55,47 +52,50 @@ class Temple(object):
             self.permissions = os.stat(path).st_mode
 
     def helptext(self):
-        '''helptext() -> str
+        """helptext() -> str
 
         Text suitable for display as help about the Temple
-        '''
+        """
         if self.permissions:
-            perms = f' ({os.st.filemode(self.permissions)})'
+            perms = f" ({os.st.filemode(self.permissions)})"
         else:
-            perms = ''
-        return '%s%s: %s\nPlaceholders\n\t%s' % (
-                self.name,
-                perms,
-                self.help,
-                '\n\t'.join(self.placeholders()))
+            perms = ""
+        return "%s%s: %s\nPlaceholders\n\t%s" % (
+            self.name,
+            perms,
+            self.help,
+            "\n\t".join(self.placeholders()),
+        )
 
     def placeholders(self):
-        '''placeholders() -> list
+        """placeholders() -> list
 
         List of names needing values for render
-        '''
+        """
         return _orderedset(
-                map(
-                    lambda p: p.lstrip(self.delim + '{').rstrip('}'),
-                    self.placeholder_re.findall(self.template.template)))
+            map(
+                lambda p: p.lstrip(self.delim + "{").rstrip("}"),
+                self.placeholder_re.findall(self.template.template),
+            )
+        )
 
     def filename(self, filename):
-        '''filename(filename) -> str
+        """filename(filename) -> str
 
         Filename where rendered template *would* be written
-        '''
+        """
         return path.expanduser(self.output.format(fname=filename))
 
     def render(self, subs=None, **kwargs):
-        '''render(subs=None, **kwargs) -> str
+        """render(subs=None, **kwargs) -> str
 
         see string.Template.safe_substitute for the parameters
-        '''
+        """
         self.rendered = self.template.safe_substitute(subs, **kwargs)
         return self.rendered
 
     def write(self, filename=None, stdout=False):
-        '''write(filename=None) -> path
+        """write(filename=None) -> path
 
         Write via output.
             1. If any of
@@ -106,14 +106,14 @@ class Temple(object):
             2. Else, write to file(output) & return path written
                 - {fname} will be substituted for filename
                 - if path already exists, don't write, but return path
-        '''
+        """
         stdout_conditions = (
-                stdout,
-                self.output is 'stdout',
-                filename is None and '{fname}' in self.output,
-                )
+            stdout,
+            self.output is "stdout",
+            filename is None and "{fname}" in self.output,
+        )
         if any(stdout_conditions):
-            print(self.rendered, end='')
+            print(self.rendered, end="")
             return None
         else:
             fullpath = self.filename(filename)
@@ -124,7 +124,7 @@ class Temple(object):
                 return fullpath
             if not path.isdir(dirname):
                 os.makedirs(dirname)
-            with open(fullpath, mode='w', errors='strict') as f:
+            with open(fullpath, mode="w", errors="strict") as f:
                 f.write(self.rendered)
             # update permissions based on origin
             if self.permissions:
@@ -133,60 +133,55 @@ class Temple(object):
 
 
 def from_file(filename):
-    '''from_file(filename) -> Temple
+    """from_file(filename) -> Temple
 
     Read filename to produce a Temple. see package documentation for details on
     the format.
 
     Take care--almost no error handling is done. Bad input will fail noisly.
-    '''
-    comment_char = ''
+    """
+    comment_char = ""
     directives = dict()
-    content = ''
-    with open(filename, mode='r', errors='strict') as f:
+    content = ""
+    with open(filename, mode="r", errors="strict") as f:
         firstline = f.readline()
         comment_char = firstline[0]
         for line in f:
             if line == firstline:
                 break
             (directive, value) = map(
-                    lambda s: s.strip(),
-                    line.lstrip(comment_char).split(':'))
+                lambda s: s.strip(), line.lstrip(comment_char).split(":")
+            )
             directives[directive] = value
         content = f.read()
     return Temple(
-            path.basename(filename),
-            directives['output'],
-            directives['help'],
-            content,
-            delim=directives['delim'],
-            path=filename)
+        path.basename(filename),
+        directives["output"],
+        directives["help"],
+        content,
+        delim=directives["delim"],
+        path=filename,
+    )
 
 
 def temples(tpath):
-    '''temples(tpath) -> dict
+    """temples(tpath) -> dict
 
     The result is a mapping of template names to Temple values.  If tpath is a
     directory, this mapping contains a Temple for each file in the directory.
     If it is a single file, it only contains that file.
 
     See also from_file.
-    '''
+    """
     if not path.exists(tpath):
         return dict()
     elif path.isdir(tpath):
-        files = glob.iglob(
-                path.join(
-                    path.expanduser(tpath),
-                    '*'))
+        files = glob.iglob(path.join(path.expanduser(tpath), "*"))
     elif path.isfile(tpath):
         files = [tpath]
     else:
         return dict()
-    return {t.name: t
-            for t in map(
-                from_file,
-                files)}
+    return {t.name: t for t in map(from_file, files)}
 
 
 def _orderedset(keys):

@@ -1,4 +1,4 @@
-'''The cli for tmplr'''
+"""The cli for tmplr"""
 
 import tmplr
 
