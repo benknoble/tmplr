@@ -88,8 +88,9 @@ Create it with "temples -e -t {temple}".""".format(
         p.error(
             """Missing placeholder value.
 
-Run "temples -t {temple}" to see available keys.""".format(
-                temple=args.temple
+Required keys:
+{keys}""".format(
+                keys="\n".join(temple.placeholders())
             )
         )
     temple.render(subs)
