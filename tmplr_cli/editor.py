@@ -24,7 +24,7 @@ def editor():
     env_vars = ["VISUAL", "EDITOR"]
     editors = [
         ed
-        for ed in map(lambda e: os.environ.get(e), env_vars)
+        for ed in map(os.environ.get, env_vars)
         if ed is not None
     ] + defaults
     assert len(editors) > 0, "No editors found"

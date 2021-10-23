@@ -83,7 +83,7 @@ Create it with "temples -e -t {temple}".""".format(
     if args.print_file:
         print(temple.filename(args.file))
         sys.exit(0)
-    subs = dict(map(lambda kv: parse_kv(kv), args.render_args))
+    subs = dict(map(parse_kv, args.render_args))
     if not all(key in subs for key in temple.placeholders()):
         p.error(
             """Missing placeholder value.
