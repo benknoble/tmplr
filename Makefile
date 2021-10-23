@@ -45,13 +45,12 @@ WHEEL = $(DIST)/$(TMPLR_FULLVERSION)-py3-none-any.whl
 DIST_FILES = $(TAR) $(WHEEL)
 
 BINARIES = tmplr temples
-V_BINARIES = $(patsubst %,$(V_BIN)/%,$(BINARIES))
 #  variables }}}
 
 all: test
 
 # get setup for development
-develop: $(VIRTUAL_ENV) $(DEV_REQS) $(V_BINARIES)
+develop: $(VIRTUAL_ENV) $(DEV_REQS)
 
 # run the tests
 test: $(VIRTUAL_ENV)
@@ -66,7 +65,6 @@ deploy: test $(DIST_FILES)
 clean:
 	-rm -r $(DIST)
 	-find -f tmplr tmplr_cli -iname '*pyc' -delete -print
-	-rm -r build
 
 # really clean up
 distclean: clean
@@ -105,6 +103,3 @@ $(VIRTUAL_ENV):
 
 $(DEV_REQS):
 	$(pip) install --requirement $(DEV_REQS_FILE)
-
-$(V_BINARIES):
-	$(pip) install -e .
