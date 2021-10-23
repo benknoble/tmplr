@@ -7,8 +7,6 @@
 SHELL = /bin/sh
 
 #  macros {{{
-run_setup = $(V_PYTHON) $(SETUP)
-
 py_module = $(1) -m $(2)
 sys_py_module = $(call py_module,$(SYS_PYTHON3),$(1))
 v_py_module = $(call py_module,$(V_PYTHON),$(1))
@@ -28,8 +26,6 @@ bump_major = $(AWK) -F. -v OFS='.' '{print $$1+1,0,0}'
 SED = sed
 AWK = awk
 
-SETUP = setup.py
-
 VIRTUAL_ENV = .venv
 V_BIN = $(VIRTUAL_ENV)/bin
 
@@ -40,8 +36,8 @@ V_TWINE = $(V_BIN)/twine
 DEV_REQS_FILE = dev-requirements.txt
 DEV_REQS = $(V_TWINE)
 
-TMPLR_VERSION = $(shell $(run_setup) --version)
-TMPLR_FULLVERSION = $(shell $(run_setup) --fullname)
+TMPLR_VERSION = $(shell $(V_PYTHON) -c 'import tmplr; print (tmplr.__version__)')
+TMPLR_FULLVERSION = tmplr-$(TMPLR_VERSION)
 
 DIST = dist
 TAR = $(DIST)/$(TMPLR_FULLVERSION).tar.gz
@@ -70,7 +66,7 @@ deploy: test $(DIST_FILES)
 clean:
 	-rm -r $(DIST)
 	-find -f tmplr tmplr_cli -iname '*pyc' -delete -print
-	$(run_setup) clean -a
+	-rm -r build
 
 # really clean up
 distclean: clean
@@ -94,11 +90,8 @@ patch minor major:
 	git commit -m 'Bump version'
 	git tag v$(NEW_VERSION)
 
-# run setup.py's check
-check:
-	$(run_setup) check --strict
-
-$(DIST_FILES): test check
+check: $(DIST_FILES)
+	$(twine) check --strict $(DIST_FILES)
 
 $(TAR):
 	$(build) --sdist
@@ -114,4 +107,4 @@ $(DEV_REQS):
 	$(pip) install --requirement $(DEV_REQS_FILE)
 
 $(V_BINARIES):
-	$(run_setup) develop
+	$(pip) install -e .
