@@ -16,6 +16,7 @@ v_py_module = $(call py_module,$(V_PYTHON),$(1))
 venv = $(call sys_py_module,venv)
 pip = $(call v_py_module,pip)
 twine = $(call v_py_module,twine)
+build = $(call v_py_module,build)
 
 bump_patch = $(AWK) -F. -v OFS='.' '{print $$1,$$2,$$3+1}'
 bump_minor = $(AWK) -F. -v OFS='.' '{print $$1,$$2+1,0}'
@@ -99,10 +100,10 @@ check:
 $(DIST_FILES): test check
 
 $(TAR):
-	$(run_setup) sdist
+	$(build) --sdist
 
 $(WHEEL):
-	$(run_setup) bdist_wheel
+	$(build) --wheel
 
 
 $(VIRTUAL_ENV):
