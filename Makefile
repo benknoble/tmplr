@@ -28,7 +28,7 @@ AWK = awk
 
 SETUP = setup.py
 
-VIRTUAL_ENV = .env
+VIRTUAL_ENV = .venv
 V_BIN = $(VIRTUAL_ENV)/bin
 
 SYS_PYTHON3 = python3
