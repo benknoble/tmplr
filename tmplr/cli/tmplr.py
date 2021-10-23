@@ -6,14 +6,14 @@ import sys
 
 import tmplr
 import tmplr.temple
-import tmplr_cli
-import tmplr_cli.editor as editor
+import tmplr.cli
+import tmplr.cli.editor as editor
 
 
 def parser():
     p = argparse.ArgumentParser(description="Holy template renderer",)
     p.add_argument(
-        "--version", action="version", version=tmplr_cli.__version__,
+        "--version", action="version", version=tmplr.cli.__version__,
     )
     p.add_argument(
         "-d",
