@@ -17,6 +17,7 @@ venv = $(call sys_py_module,venv)
 pip = $(call v_py_module,pip)
 twine = $(call v_py_module,twine)
 build = $(call v_py_module,build)
+unittest = $(call v_py_module,unittest)
 
 bump_patch = $(AWK) -F. -v OFS='.' '{print $$1,$$2,$$3+1}'
 bump_minor = $(AWK) -F. -v OFS='.' '{print $$1,$$2+1,0}'
@@ -58,7 +59,7 @@ develop: $(VIRTUAL_ENV) $(DEV_REQS) $(V_BINARIES)
 
 # run the tests
 test: $(VIRTUAL_ENV)
-	$(run_setup) test
+	$(unittest) -v
 
 # for the maintainers: deploy to twine
 deploy: test $(DIST_FILES)

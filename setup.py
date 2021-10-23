@@ -37,7 +37,6 @@ setup(
     install_requires=[],
     python_requires=">=3",
     packages=["tmplr", "tmplr_cli",],
-    test_suite="tests.suite",
     entry_points={
         "console_scripts": [
             "tmplr=tmplr_cli.tmplr_app:main",
